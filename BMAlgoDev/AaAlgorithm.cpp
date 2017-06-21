@@ -1786,7 +1786,7 @@ int CAaAlgorithm::AaMtfSfr(const IMG_UBBUF src, double pMTF[CHART_BLOB_NUM])
 int CAaAlgorithm::AaMtfStdDev(const IMG_UBBUF src, double pMTF[CHART_BLOB_NUM])
 {
 	int nSFRwidth = 3;
-	int nMTFfactor = 90;
+	int nMTFfactor = 70;
 
 	int pos = 0, pos1 = 0;
 	int n = 0, m = 0;
@@ -2032,7 +2032,7 @@ int CAaAlgorithm::AaMtfStdDev(const IMG_UBBUF src, double pMTF[CHART_BLOB_NUM])
 int CAaAlgorithm::AaMtfMaxMin(const IMG_UBBUF src, double pMTF[CHART_BLOB_NUM])
 {
 	int nSFRwidth = 3;
-	int nMTFfactor = 180;
+	//int nMTFfactor = 180; //change MTF calculation to: (max - min) / (max + min)
 
 	int pos = 0, pos1 = 0;
 	int n = 0, m = 0;
@@ -2094,7 +2094,7 @@ int CAaAlgorithm::AaMtfMaxMin(const IMG_UBBUF src, double pMTF[CHART_BLOB_NUM])
 			return 1;
 		grayL = double(nMaxAve) / nCnt;
 		grayR = double(nMinAve) / nCnt;
-		dMtfL = fabs(grayL - grayR) / nMTFfactor;
+		dMtfL = fabs(grayL - grayR) / (grayL + grayR);//nMTFfactor;
 
 		//right
 		y1 = m_sChartBlobs.EdgeRight[n][0].y;
@@ -2142,7 +2142,7 @@ int CAaAlgorithm::AaMtfMaxMin(const IMG_UBBUF src, double pMTF[CHART_BLOB_NUM])
 			return 2;
 		grayL = double(nMaxAve) / nCnt;
 		grayR = double(nMinAve) / nCnt;
-		dMtfR = fabs(grayL - grayR) / nMTFfactor;
+		dMtfR = fabs(grayL - grayR) / (grayL + grayR);//nMTFfactor;
 
 		//up
 		x1 = m_sChartBlobs.EdgeUp[n][0].x;
@@ -2190,7 +2190,7 @@ int CAaAlgorithm::AaMtfMaxMin(const IMG_UBBUF src, double pMTF[CHART_BLOB_NUM])
 			return 1;
 		grayU = double(nMaxAve) / nCnt;
 		grayD = double(nMinAve) / nCnt;
-		dMtfU = fabs(grayU - grayD) / nMTFfactor;
+		dMtfU = fabs(grayU - grayD) / (grayU + grayD);//nMTFfactor;
 
 		//down
 		x1 = m_sChartBlobs.EdgeDown[n][0].x;
@@ -2238,7 +2238,7 @@ int CAaAlgorithm::AaMtfMaxMin(const IMG_UBBUF src, double pMTF[CHART_BLOB_NUM])
 			return 1;
 		grayU = double(nMaxAve) / nCnt;
 		grayD = double(nMinAve) / nCnt;
-		dMtfD = fabs(grayU - grayD) / nMTFfactor;
+		dMtfD = fabs(grayU - grayD) / (grayU + grayD);//nMTFfactor;
 
 		//MTF of one blob
 		pMTF[n] = (dMtfL + dMtfR + dMtfU + dMtfD) / 4;
